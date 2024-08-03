@@ -24,13 +24,22 @@ def handleClient(client):
         pass
 
 
-
 # noinspection PyBroadException
 def getResponse(query):
     BasicVoid.sendInfo(str(query))
     timeStart = time.time()
     try:
-        data = Geetest.GeetestLocal.passGeetest(query.get('gt', [''])[0], query.get('c', [''])[0])
+        gt = query.get('gt', [''])[0]
+        c = query.get('c', [''])[0]
+        if gt == "test":
+            data = {
+                "success": True,
+                "challenge": "test",
+                "validate": "test",
+                "seccode": "test",
+            }
+        else:
+            data = Geetest.GeetestLocal.passGeetest(gt, c)
     except Exception as e:
         print(e)
         data = {"success": False}
