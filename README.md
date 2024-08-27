@@ -8,6 +8,8 @@ B站验证码云通过部署
 
 > 仅支持Windows环境，跑不了就是你Windows版本太老了or缺库！
 
+> 在python中，request库初始化需要>300ms，建议复用session并在调用前提前建立连接
+
 | 特性   | 支持 |
 |------|----|
 | 高并发  | √  |
@@ -25,3 +27,19 @@ def passGeetest(geetest, challenge):
     except Exception:
         return passGeetest(geetest, challenge)
     return data
+```
+
+## 连接测试
+参考Python
+```
+def checkCloudGeetest(address):
+    session = requests.Session()
+    url = "http://" + address + "?gt=test&c=test"
+    try:
+        data = session.get(url=url, timeout=(9.05, 15.05)).json()
+        BasicVoid.sendInfo("测试成功！数据：" + str(data))
+        return True
+    except Exception as e:
+        print(e)
+    return False
+```
