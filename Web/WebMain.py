@@ -58,5 +58,9 @@ def startWeb():
     BasicVoid.sendInfo("服务器已在 localhost:8888 端口开始监听......")
     while True:
         client, addr = server.accept()
+        # 同步方案，快一点但是没法并发
+        # thread = threading.Thread(target=handleClient, args=(client,))
+        # thread.start()
+        # 异步方案，但是会慢300ms左右
         process = multiprocessing.Process(target=handleClient, args=(client,))
         process.start()
